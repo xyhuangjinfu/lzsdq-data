@@ -26,7 +26,7 @@ def parse_chazidian(url):
 
 
 if __name__ == '__main__':
-    url = "https://www.chazidian.com/kepu_9280/"
+    url = ""
     article = parse_chazidian(url)
 
     print(article["title"])

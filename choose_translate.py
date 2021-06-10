@@ -67,5 +67,14 @@ def split_article(paragraph_separator, sentence_separator, article):
     return format_list
 
 
+def format_article():
+    origin_format_list = split_article("\n", ".", read_content("origin.txt"))
+    fp = open("assets/translate/compare.txt", "w", encoding="utf-8")
+    fp.seek(0)
+    fp.truncate()
+    fp.write("".join(origin_format_list))
+    fp.close()
+
+
 if __name__ == '__main__':
-    translate_compare()
+    format_article()

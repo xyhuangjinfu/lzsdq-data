@@ -5,6 +5,11 @@ import db
 
 
 def parse_chazidian(url):
+    """
+    https://www.chazidian.com
+    :param url:
+    :return:
+    """
     resp = urllib.request.urlopen(url)
     html = resp.read().decode("utf-8")
     reg_ignore = re.compile("\r|\n|\t")
@@ -26,7 +31,7 @@ def parse_chazidian(url):
 
 
 if __name__ == '__main__':
-    url = ""
+    url = "https://www.chazidian.com/kepu_9329/"
     article = parse_chazidian(url)
 
     print(article["title"])

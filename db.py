@@ -3,6 +3,30 @@ import datetime
 import mysql.connector
 
 
+def get_all_article():
+    db_connection = None
+    db_cursor = None
+    article_list = []
+    try:
+        db_connection = _open_db_connection()
+        db_cursor = db_connection.cursor()
+
+        sql_str = "SELECT id, title, create_time FROM article ORDER BY create_time DESC LIMIT 10000;"
+        db_cursor.execute(sql_str)
+
+        for (article_id, article_title, create_time) in db_cursor:
+            article = {"id": article_id, "title": article_title, "create_time": create_time}
+            article_list.append(article)
+
+    except mysql.connector.Error as error:
+        if db_connection:
+            db_connection.rollback()
+    finally:
+        _close_db_cursor(db_cursor)
+        _close_db_connection(db_connection)
+        return article_list
+
+
 def add_article(title, ordered_paragraphs):
     db_connection = None
     db_cursor = None

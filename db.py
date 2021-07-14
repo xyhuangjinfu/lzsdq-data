@@ -1,4 +1,5 @@
 import datetime
+import os
 
 import mysql.connector
 
@@ -59,11 +60,11 @@ def add_article(title, ordered_paragraphs):
 
 def _open_db_connection():
     db_connection = mysql.connector.connect(
-        host="106.14.140.35",
-        port="3306",
-        database="lzsdq",
-        user="hjf",
-        password="654321"
+        host=os.environ["MYSQL_HOST"],
+        port=os.environ["MYSQL_PORT"],
+        database=os.environ["MYSQL_SCHEMA"],
+        user=os.environ["MYSQL_USER"],
+        password=os.environ["MYSQL_PWD"]
     )
     db_connection.autocommit = False
     return db_connection

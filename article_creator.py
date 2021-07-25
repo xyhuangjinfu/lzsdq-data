@@ -5,7 +5,10 @@ import translate_youdao
 
 
 def create(url):
+    print("------------------------------------------------------------------------------------------------")
+    print(f"工作链接: {url}")
     article_en = page_crawler.get_article(url)
+    print("原文获取成功")
 
     paragraphs_en = article_en["paragraphs"]
     paragraphs_zh = []
@@ -19,6 +22,7 @@ def create(url):
     article_zh = {}
     article_zh["title"] = translate_youdao.en2zh(article_en["title"])
     article_zh["paragraphs"] = paragraphs_zh
+    print("翻译获取成功")
 
     return write_contrast(article_en, article_zh)
 

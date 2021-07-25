@@ -58,5 +58,6 @@ def write_contrast(article_en, article_zh):
 
 
 if __name__ == '__main__':
-    out_path = create("https://science.howstuffworks.com/magnets-and-magnetism-kids.htm")
+    # out_path = create("https://science.howstuffworks.com/magnets-and-magnetism-kids.htm")
+    out_path = create("https://science.howstuffworks.com/magnet.htm")
     print(f"对比成功：{out_path}")

@@ -2,6 +2,10 @@ import re
 import urllib.parse
 import urllib.request
 
+import cache_util
+import html_util
+import sentence_spliter
+
 
 class HowStuffWorks:
     domain = "howstuffworks.com"
@@ -24,7 +28,10 @@ class HowStuffWorks:
         paragraph_list = re.findall(pattern_paragraph, page_content)
         p_list = []
         for p in paragraph_list:
-            p_list.append(remove_link(p))
+            p_no_tag = html_util.remove_a(p)
+            p_no_tag = html_util.remove_i(p_no_tag)
+            sentences = sentence_spliter.split(p_no_tag)
+            p_list.append(sentences)
         return p_list
 
 
@@ -44,26 +51,21 @@ def get_page(url):
     :param url:
     :return:
     """
+    cache_name = url.replace("//", "-").replace(":", "-").replace("/", "-")
+    cache_path = f"cache\\{cache_name}"
+
+    cache_content = cache_util.read(cache_path)
+    if not cache_content:
+        return cache_content
+
     req = urllib.request.Request(url)
     resp = urllib.request.urlopen(req)
     resp = resp.read()
     resp = resp.decode("utf-8")
+
+    cache_util.write(cache_path, resp)
+
     return resp
-
-
-def remove_link(content_contain_link):
-    """
-    从超链接中提取文字内容
-    :param content_contain_link:
-    :return:
-    """
-    pattern_link = re.compile('<a.*?>(.+?)</a>')
-
-    def _link_content(matched):
-        return matched.group(1)
-
-    content_no_link = re.sub(pattern_link, _link_content, content_contain_link)
-    return content_no_link
 
 
 if __name__ == '__main__':

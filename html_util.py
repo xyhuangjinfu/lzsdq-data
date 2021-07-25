@@ -1,6 +1,10 @@
 import re
 
 
+def remove_b(content_contain_tag):
+    return remove_double_tag(content_contain_tag, "b")
+
+
 def remove_i(content_contain_tag):
     return remove_double_tag(content_contain_tag, "i")
 

@@ -30,6 +30,7 @@ class HowStuffWorks:
         for p in paragraph_list:
             p_no_tag = html_util.remove_a(p)
             p_no_tag = html_util.remove_i(p_no_tag)
+            p_no_tag = html_util.remove_b(p_no_tag)
             sentences = sentence_spliter.split(p_no_tag)
             p_list.append(sentences)
         return p_list

@@ -4,6 +4,7 @@ import urllib.request
 
 
 def en2zh(content):
+    print(content)
     url = "http://m.youdao.com/translate"
     headers = {
         "Connection": "keep-alive",
@@ -26,4 +27,5 @@ def en2zh(content):
     resp = resp.decode("utf-8")
     pattern_result = re.compile('<ul id="translateResult">\s*<li>(.+)</li>\s*</ul>')
     result_list = re.findall(pattern_result, resp)
-    return result_list[0]
+    result = result_list[0]
+    return result

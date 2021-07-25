@@ -55,7 +55,7 @@ def get_page(url):
     cache_path = f"cache\\{cache_name}"
 
     cache_content = cache_util.read(cache_path)
-    if not cache_content:
+    if cache_content:
         return cache_content
 
     req = urllib.request.Request(url)

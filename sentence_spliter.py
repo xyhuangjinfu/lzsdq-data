@@ -16,11 +16,13 @@ def split(paragraph):
         match_sentence = pattern_sentence_separator.search(paragraph, offset)
         if not match_sentence:
             sentence = paragraph[offset:len(paragraph)].strip()
-            sentence_list.append(sentence)
+            if sentence:
+                sentence_list.append(sentence)
             break
         next_offset = match_sentence.span()[1]
         sentence = paragraph[offset:next_offset].strip()
-        sentence_list.append(sentence)
+        if sentence:
+            sentence_list.append(sentence)
         offset = next_offset
 
     return sentence_list

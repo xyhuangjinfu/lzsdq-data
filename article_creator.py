@@ -37,7 +37,9 @@ def write_contrast(article_en, article_zh):
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
-    out_file_path = os.path.join(dir_path, f"{article_zh['title']}.txt")
+    file_name = article_zh['title']
+    file_name = file_name.replace("?", "")
+    out_file_path = os.path.join(dir_path, f"{file_name}.txt")
 
     fp = open(out_file_path, "w+", encoding="utf-8")
     fp.seek(0)

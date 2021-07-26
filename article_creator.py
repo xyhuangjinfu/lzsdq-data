@@ -1,14 +1,19 @@
+import argparse
 import os.path
 
 import page_crawler
 import translate_youdao
 
 
-def create(url):
+def create(url, translate):
     print("------------------------------------------------------------------------------------------------")
-    print(f"工作链接: {url}")
+    print(f"工作链接: {url}   翻译：{translate}")
     article_en = page_crawler.get_article(url)
     print("原文获取成功")
+
+    if not translate:
+        print("不翻译，退出")
+        return
 
     paragraphs_en = article_en["paragraphs"]
     paragraphs_zh = []
@@ -57,7 +62,19 @@ def write_contrast(article_en, article_zh):
     return out_file_path
 
 
+def get_cli_args():
+    parser = argparse.ArgumentParser(description='文章翻译对比工具')
+
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-d', dest='download', action='store_true', default='False', help='only download')
+    group.add_argument('-t', dest='translate', action='store_true', default='False', help='download and translate')
+
+    parser.add_argument('url', default='', type=str, help='网页链接')
+
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
-    # out_path = create("https://science.howstuffworks.com/magnets-and-magnetism-kids.htm")
-    out_path = create("https://science.howstuffworks.com/magnet.htm")
-    print(f"对比成功：{out_path}")
+    args = get_cli_args()
+    is_translate = (str(args.translate) == str(True))
+    create(args.url, is_translate)

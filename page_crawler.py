@@ -30,7 +30,9 @@ def get_page(url):
     if cache_content:
         return cache_content
 
-    req = urllib.request.Request(url)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Mobile Safari/537.36"}
+    req = urllib.request.Request(url, headers=headers)
     resp = urllib.request.urlopen(req)
     resp = resp.read()
     resp = resp.decode("utf-8")

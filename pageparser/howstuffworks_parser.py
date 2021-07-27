@@ -35,25 +35,31 @@ def get_article(page_html):
 
     for div in page_body_div_list:
         for child in div.children:
-            paragraph = None
             if type(child) is Tag:
                 if child.name == "p":
                     paragraph = child.get_text()
+                    _add_paragraph(paragraphs, paragraph)
+                    continue
                 if child.name == "div":
                     if "class" in child.attrs and "list" in child.attrs["class"]:
                         for ul in child.children:
                             for li in ul.children:
                                 paragraph = li.get_text()
-                                if paragraph:
-                                    sentence = sentence_spliter.split(paragraph)
-                                    if sentence and len(sentence) > 0:
-                                        paragraphs.append(sentence)
-            if paragraph:
-                sentence = sentence_spliter.split(paragraph)
-                if sentence and len(sentence) > 0:
-                    paragraphs.append(sentence)
+                                _add_paragraph(paragraphs, paragraph)
+                        continue
+                    if "class" in child.attrs and "blockquote" in child.attrs["class"]:
+                        paragraph = child.get_text()
+                        _add_paragraph(paragraphs, paragraph)
+                        continue
 
     return {"title": title, "paragraphs": paragraphs}
+
+
+def _add_paragraph(paragraphs, paragraph):
+    if paragraph:
+        sentences = sentence_spliter.split(paragraph)
+        if sentences and len(sentences) > 0:
+            paragraphs.append(sentences)
 
 
 if __name__ == '__main__':

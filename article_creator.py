@@ -1,5 +1,6 @@
 import argparse
 import os.path
+import re
 
 import page_crawler
 import translate_youdao
@@ -38,7 +39,8 @@ def write_contrast(article_en, article_zh):
         os.makedirs(dir_path)
 
     file_name = article_zh['title']
-    file_name = file_name.replace("?", "")
+    invalid_char_pattern = "[?？:：\s]"
+    file_name = re.sub(invalid_char_pattern, "_", file_name)
     out_file_path = os.path.join(dir_path, f"{file_name}.txt")
 
     fp = open(out_file_path, "w+", encoding="utf-8")

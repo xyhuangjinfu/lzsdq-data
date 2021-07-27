@@ -1,10 +1,15 @@
+import os.path
+import urllib.request
+
 import db
+import root_dir_util
 
 
 def create_sitemap():
     article_list = db.get_all_article()
 
-    fp = open("./assets/sitemap.xml", "w+", encoding="utf-8")
+    sitemap_path = os.path.join(root_dir_util.get_root_dir(), "output", "sitemap.xml")
+    fp = open(sitemap_path, "w+", encoding="utf-8")
     fp.seek(0)
     fp.truncate()
 
@@ -19,6 +24,26 @@ def create_sitemap():
 
     fp.write('</urlset>\n')
     fp.close()
+    return sitemap_path
+
+
+def upload_sitemap(sitemap_path):
+    fp = open(sitemap_path, "r", encoding="utf-8")
+    content = fp.read()
+    fp.close()
+
+    url = "https://www.lzsdq.cn/sitemap.xml"
+    req = urllib.request.Request(url, method="PUT")
+    resp = urllib.request.urlopen(req, data=bytes(content, encoding="utf-8"))
+    status_code = resp.getcode()
+    return status_code == 204
+
+
+def main():
+    sitemap_path = create_sitemap()
+    print(f"sitemap 创建成功：{sitemap_path}")
+    upload_success = upload_sitemap(sitemap_path)
+    print(f"上传 sitemap ：{upload_success}")
 
 
 def _get_date(datetime_obj):
@@ -27,4 +52,4 @@ def _get_date(datetime_obj):
 
 
 if __name__ == '__main__':
-    create_sitemap()
+    main()

@@ -25,12 +25,45 @@ def create(url, translate):
             sentences_zh.append(s_zh)
         paragraphs_zh.append(sentences_zh)
 
-    article_zh = {}
-    article_zh["title"] = translate_youdao.en2zh(article_en["title"])
-    article_zh["paragraphs"] = paragraphs_zh
+    article_zh = {"title": translate_youdao.en2zh(article_en["title"]),
+                  "paragraphs": paragraphs_zh}
     print("翻译获取成功")
 
-    return write_contrast(article_en, article_zh)
+    contrast_path = write_contrast(article_en, article_zh)
+    zh_path = write_zh(article_zh)
+    print(f"中英对比文件：{contrast_path}")
+    print(f"中文翻译文件：{zh_path}")
+
+    return contrast_path, zh_path
+
+
+def write_zh(article_zh):
+    dir_path = os.path.join("output", "article_zh")
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
+    file_name = article_zh['title']
+    invalid_char_pattern = "[?？:：\s]"
+    file_name = re.sub(invalid_char_pattern, "_", file_name)
+    out_file_path = os.path.join(dir_path, f"{file_name}.txt")
+
+    fp = open(out_file_path, "w+", encoding="utf-8")
+    fp.seek(0)
+    fp.truncate()
+
+    fp.write(article_zh["title"])
+    fp.write("\n")
+    fp.write("\n")
+
+    for p_idx in range(0, len(article_zh["paragraphs"])):
+        for s_idx in range(0, len(article_zh["paragraphs"][p_idx])):
+            fp.write(article_zh["paragraphs"][p_idx][s_idx])
+            fp.write("\n")
+        fp.write("\n")
+
+    fp.close()
+
+    return out_file_path
 
 
 def write_contrast(article_en, article_zh):

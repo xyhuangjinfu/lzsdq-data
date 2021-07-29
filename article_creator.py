@@ -10,7 +10,11 @@ def create(url, translate):
     print("------------------------------------------------------------------------------------------------")
     print(f"工作链接: {url}   翻译：{translate}")
     article_en = page_crawler.get_article(url)
-    print("原文获取成功")
+    if article_en:
+        print("原文获取成功")
+    else:
+        print("原文获取失败")
+        return
 
     if not translate:
         print("不翻译，退出")

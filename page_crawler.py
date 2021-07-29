@@ -4,6 +4,7 @@ import urllib.request
 
 import cache_util
 import pageparser.howstuffworks_parser as howstuffworks_parser
+import pageparser.livescience_parser as livescience_parser
 import root_dir_util
 
 
@@ -15,6 +16,8 @@ def get_article(url):
     """
     if howstuffworks_parser.is_my_domain(url):
         return howstuffworks_parser.get_article_by_url(url)
+    if livescience_parser.is_my_domain(url):
+        return livescience_parser.get_article_by_url(url)
 
 
 def get_page(url):
@@ -34,6 +37,10 @@ def get_page(url):
         "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Mobile Safari/537.36"}
     req = urllib.request.Request(url, headers=headers)
     resp = urllib.request.urlopen(req)
+
+    if resp.getcode() != 200:
+        return None
+
     resp = resp.read()
     resp = resp.decode("utf-8")
 

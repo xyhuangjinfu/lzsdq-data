@@ -11,12 +11,10 @@ def is_my_domain(url):
 
 
 def get_article_by_url(url):
-    url = _transform_url(url)
     return get_article(page_crawler.get_page(url))
 
 
 def get_article(page_html):
-    # print(page_html)
     title = None
     paragraphs = []
 
@@ -40,12 +38,6 @@ def get_article(page_html):
                     paragraphs.append(sentence)
 
     return {"title": title, "paragraphs": paragraphs}
-
-
-def _transform_url(url):
-    if not url.endswith("/transcript"):
-        url += "/transcript"
-    return url
 
 
 if __name__ == '__main__':

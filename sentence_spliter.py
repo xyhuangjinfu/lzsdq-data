@@ -9,7 +9,7 @@ def split(paragraph):
     """
     sentence_list = []
     # pattern持续更新
-    pattern_sentence_separator = re.compile("(?<!Dr|No)\.|\?|!")
+    pattern_sentence_separator = re.compile("(?<!Dr|No)\.(?![0-9a-zA-Z])|\?|!")
 
     offset = 0
     while offset < len(paragraph):
